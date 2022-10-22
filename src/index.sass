@@ -1,0 +1,61 @@
+*
+    padding: 0
+    margin: 0
+    box-sizing: border-box
+
+// reset
+input[type=number]::-webkit-inner-spin-button
+    -webkit-appearance: none
+    opacity: 0
+
+button, input, select
+    background: none
+    border: none
+    &:focus
+        outline: none !important
+
+li
+    list-style: none
+    margin: .4rem 0
+
+form
+    max-width: 500px
+    width: 100%
+    margin: 1rem auto
+
+.field-group
+    width: 100%
+    .input-group
+        position: relative
+        width: 100%
+        label
+            transition: all .3s linear
+            display: inline-block
+            margin-bottom: .7rem
+        input, textarea
+            resize: none
+            background-color: transparent
+            width: 100%
+            border: 1px solid black
+            color: black
+            height: 40px
+            padding: 0 1rem
+            transition: .25s
+            &:focus, &:hover
+                border-color: black
+            &.error
+                border-color: red
+            &.success
+                border-color: green
+            &:disabled
+                border-color: #4a535b
+                color: #4a535b
+        textarea
+            min-height: 100px
+            font-family: BarlowRegular
+        .toggle-password
+            height: 100%
+            button
+                cursor: pointer
+                height: 100%
+                width: 50px
