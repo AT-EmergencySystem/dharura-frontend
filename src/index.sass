@@ -1,7 +1,36 @@
+@use "./functions" as functions
+
 *
     padding: 0
     margin: 0
     box-sizing: border-box
+
+.flex-center
+    @include functions.flexCenter
+
+.flex-wide
+    @include functions.flexWide
+
+.flex-end
+    @include functions.flexEnd
+
+.flex-start
+    @include functions.flexStart
+
+.flex-around
+    @include functions.flexAround
+
+.flex-even
+    @include functions.flexEvenly
+
+.flex-column
+    flex-direction: column
+
+.flex-row
+    flex-direction: row
+
+.text-white
+    // color: white
 
 // reset
 input[type=number]::-webkit-inner-spin-button
@@ -52,6 +81,8 @@ form
                 color: #4a535b
         textarea
             min-height: 100px
+            padding: 1rem
+            font-size: 1rem
             font-family: BarlowRegular
         .toggle-password
             height: 100%

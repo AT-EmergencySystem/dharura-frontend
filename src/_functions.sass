@@ -1,0 +1,24 @@
+@mixin flexCenter()
+    display: flex
+    justify-content: center
+    align-items: center
+
+@mixin flexWide()
+    @include flexCenter()
+    justify-content: space-between
+
+@mixin flexEnd()
+    @include flexCenter()
+    justify-content: flex-end
+
+@mixin flexStart()
+    @include flexCenter()
+    justify-content: flex-start
+
+@mixin flexAround()
+    @include flexCenter()
+    justify-content: space-around
+
+@mixin flexEvenly()
+    @include flexCenter()
+    justify-content: space-evenly
