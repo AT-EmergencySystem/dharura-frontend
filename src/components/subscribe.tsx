@@ -8,12 +8,14 @@ import React, {
 import Button from "./Button";
 import Input from "./input";
 import Selector from "./selector";
+import axios from "axios";
 
 const Subscribe = () => {
   const [error, setError] = useState<string>("");
+  const [message, setMessage] = useState<string>("");
   const [loading, setloading] = useState<boolean>(false);
   const [disabled, setDisabled] = useState<boolean>(false);
-  const [phoneNumber, setPhoneNumber] = useState<string>("255");
+  const [phoneNumber, setPhoneNumber] = useState<string>("+255");
 
   const [occupation, setOccupation] = useState<any[]>([]);
 
@@ -30,29 +32,43 @@ const Subscribe = () => {
     (e: SyntheticEvent) => {
       e.preventDefault();
       setError("");
+      setMessage("");
       setloading(true);
       // submit data
-      setloading(false);
+      axios
+        .post(`http://170.187.194.239:5000/subscibe`, {
+          phoneNumber,
+          occupation,
+        })
+        .then((res: any) => {
+          console.log("subscribe", res);
+          setloading(false);
+          setMessage("Submitted Successfully");
+        })
+        .catch((error: any) => {
+          setloading(false);
+          setError(error?.message);
+        });
     },
-    [phoneNumber, occupation, error]
+    [phoneNumber, occupation, error, loading]
   );
 
   useEffect(() => {
-    if (
-      loading ||
-      error ||
-      phoneNumber?.length < 12 ||
-      occupation?.length < 1
-    ) {
-      setDisabled(true);
-    } else {
-      setDisabled(false);
-    }
+    // if (
+    //   loading ||
+    //   error ||
+    //   phoneNumber?.length < 12 ||
+    //   occupation?.length < 1
+    // ) {
+    //   setDisabled(true);
+    // } else {
+    //   setDisabled(false);
+    // }
   }, [error, loading, phoneNumber, occupation]);
 
   return (
     <div>
-      <form onSubmit={handleSubmit}>
+      <form action="http://170.187.194.239:5000/subscribe" method="post">
         <h2>Subscribe</h2>
         <Input
           style={{
@@ -60,6 +76,7 @@ const Subscribe = () => {
           }}
           onChange={handleChange}
           label="Phone Number"
+          name="phoneNumber"
           value={phoneNumber}
         />
         <div
@@ -68,7 +85,13 @@ const Subscribe = () => {
           }}
         >
           <p>Select Occupation</p>
-          <Selector
+          <label htmlFor="">
+            <input type="radio" name="Occupation" value="Student" /> Student
+          </label>
+          <label htmlFor="">
+            <input type="radio" name="Occupation" value="Staff" /> Staff
+          </label>
+          {/* <Selector
             style={{
               marginTop: ".7rem",
             }}
@@ -85,8 +108,26 @@ const Subscribe = () => {
             selected={occupation}
             setSelected={setOccupation}
             type="radio"
-          />
+          /> */}
         </div>
+        {error && (
+          <p
+            style={{
+              color: "red",
+            }}
+          >
+            {error}
+          </p>
+        )}
+        {message && (
+          <p
+            style={{
+              color: "blue",
+            }}
+          >
+            {message}
+          </p>
+        )}
         <Button
           label={loading ? "Subscribing" : "Subscribe"}
           style={{
@@ -96,7 +137,7 @@ const Subscribe = () => {
             color: "white",
             marginTop: "1.5rem",
           }}
-          disabled={disabled}
+          //   disabled={disabled}
           loading={loading}
         />
       </form>

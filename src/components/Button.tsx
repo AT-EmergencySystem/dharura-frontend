@@ -29,7 +29,7 @@ const Button: FC<Props> = ({
       onClick={(e) => {
         if (!disabled) {
           onClick && onClick();
-          ripple && rippleEffect(e);
+          //   ripple && rippleEffect(e);
         }
       }}
       type={type ?? "submit"}

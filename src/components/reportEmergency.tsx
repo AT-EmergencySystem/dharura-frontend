@@ -7,10 +7,10 @@ import React, {
 } from "react";
 import Button from "./Button";
 import Input from "./input";
-import Selector from "./selector";
-
+import axios from "axios";
 const ReportEmergency = () => {
   const [error, setError] = useState<string>("");
+  const [message, setMessage] = useState<string>("");
   const [loading, setloading] = useState<boolean>(false);
   const [disabled, setDisabled] = useState<boolean>(false);
   const [variables, setVariables] = useState<{
@@ -39,11 +39,26 @@ const ReportEmergency = () => {
     (e: SyntheticEvent) => {
       e.preventDefault();
       setError("");
+      setMessage("");
       setloading(true);
       // submit data
-      setloading(false);
+      axios
+        .post(`http://170.187.194.239:5000/push_notification`, {
+          title,
+          description,
+        })
+        .then((res: any) => {
+          console.log("report", res);
+
+          setloading(false);
+          setMessage("Submitted Successfully");
+        })
+        .catch((error: any) => {
+          setloading(false);
+          setError(error?.message);
+        });
     },
-    [variables, error]
+    [variables, error, loading]
   );
 
   useEffect(() => {
@@ -56,7 +71,10 @@ const ReportEmergency = () => {
 
   return (
     <div>
-      <form onSubmit={handleSubmit}>
+      <form
+        action="http://170.187.194.239:5000/push_notification"
+        method="post"
+      >
         <h2>Report an Emergency</h2>
         <Input
           style={{
@@ -77,7 +95,24 @@ const ReportEmergency = () => {
           value={description}
           textarea
         />
-
+        {error && (
+          <p
+            style={{
+              color: "red",
+            }}
+          >
+            {error}
+          </p>
+        )}
+        {message && (
+          <p
+            style={{
+              color: "blue",
+            }}
+          >
+            {message}
+          </p>
+        )}
         <Button
           label={loading ? "Reporting" : "Report"}
           style={{
@@ -87,7 +122,7 @@ const ReportEmergency = () => {
             color: "white",
             marginTop: "1.5rem",
           }}
-          disabled={disabled}
+          //   disabled={disabled}
           loading={loading}
         />
       </form>
